@@ -5,9 +5,9 @@ import pprint
 
 
 
-#x = input('Please give a number of the page you wanna view: ')
-data = 'https://www.thephotoforum.com/forums/landscape-cityscape.49/page-1'
-res = requests.get(data)
+x = input('Please give a number of the page you wanna view: ')
+data = 'https://www.thephotoforum.com/forums/landscape-cityscape.49/page-'
+res = requests.get(data + str(x))
 soup = BeautifulSoup(res.text, 'html.parser')
 links = soup.select('.PreviewTooltip')
 dislistitem = soup.select('.discussionListItem')
@@ -46,35 +46,62 @@ def data():
             photos = item.select('img')
             for i in photos:
                 dd = i.get('src')
-                if dd[0:4] != 'http':
-                    dd = 'https://www.thephotoforum.com/' + dd
-                    if '.png' not in dd:
+                if '.png' not in dd and '.gif' not in dd:
+                    if dd[0:4] != 'http':
+                        dd = 'https://www.thephotoforum.com/' + dd
                         tem_list.append(dd)
-                else:
-                    if '.png' not in dd:
-                        tem_list.append(dd)
-                
-
+                    else:
+                        tem_list.append(dd)    
         photo_list.append(tem_list)
     
     
     l1 = dicts
     l2 = photo_list
-
     for i in enumerate(l1):
         for j in enumerate(l2):
             if i[0] == j[0]:
                 i[1]['link'] = j[1]
     
     return l1
+
+
+    
+def final_result():
+    str1 = ''
+    for i in data():
+        str1 += '<h2>' + i['title'] + '</h2><br>'
+        for y in i['link']:
+            str1 += '<img src="' + y + '"<br>' + ' '
+
+    return str1
     
 
+
+html_str1 = """
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+img {
+    width: 400px;
+    height: 400px;
+    object-fit: cover;
+}
+</style>
+<body> """ 
+
+html_str2 = """   
+</body>
+</html>
+
+"""
             
- 
+html_str = html_str1 + final_result() + html_str2
 
-
-
-
-
-
-pprint.pprint(data())
+Html_file= open("List.html","w")
+Html_file.write(html_str)
+Html_file.close()
