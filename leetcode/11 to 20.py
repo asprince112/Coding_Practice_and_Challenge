@@ -95,5 +95,115 @@ class Solution:
 
 ##########################################################################################
 '''
+Given a string s, find the longest palindromic substring in s. You may assume that the maximum length of s is 1000.
 
+Example 1:
+
+Input: "babad"
+Output: "bab"
+Note: "aba" is also a valid answer.
 '''
+if len(s) >= 2:
+        d = len(s)
+        for i in range(d+1):
+            for j in range(i+1):
+
+                if s[i-j:d-j] == s[i-j:d-j][::-1]:
+                    return s[i-j:d-j]
+    else:
+        return s
+
+###################################################################################
+'''
+Given n non-negative integers a1, a2, ..., an , where each represents a point at coordinate (i, ai). n vertical lines are drawn such that the two endpoints of line i is at (i, ai) and (i, 0). Find two lines, which together with x-axis forms a container, such that the container contains the most water.
+
+Note: You may not slant the container and n is at least 2.
+
+Example:
+
+Input: [1,8,6,2,5,4,8,3,7]
+Output: 49
+'''
+class Solution:
+    def maxArea(self, height: List[int]) -> int:
+        water = 0
+        head = 0
+        tail = len(height) - 1
+        for i in range(len(height)):
+            width = abs(head - tail)
+            if height[head] < height[tail]:   
+                res = width * height[head]
+                head += 1
+            else:
+                res = width * height[tail]
+                tail -= 1
+
+            if res > water:
+                water = res
+        return water
+
+########################################################################################
+'''
+Roman numerals are represented by seven different symbols: I, V, X, L, C, D and M.
+
+For example, two is written as II in Roman numeral, just two one's added together. Twelve is written as, XII, which is simply X + II. The number twenty seven is written as XXVII, which is XX + V + II.
+
+Roman numerals are usually written largest to smallest from left to right. However, the numeral for four is not IIII. Instead, the number four is written as IV. Because the one is before the five we subtract it making four. The same principle applies to the number nine, which is written as IX. There are six instances where subtraction is used:
+
+I can be placed before V (5) and X (10) to make 4 and 9. 
+X can be placed before L (50) and C (100) to make 40 and 90. 
+C can be placed before D (500) and M (1000) to make 400 and 900.
+Given an integer, convert it to a roman numeral. Input is guaranteed to be within the range from 1 to 3999.
+
+Example 1:
+
+Input: 3
+Output: "III"
+Example 2:
+
+Input: 4
+Output: "IV"
+'''
+class Solution:
+    def romanToInt(self, s: str) -> int:
+        roman = {'M': 1000,'D': 500 ,'C': 100,'L': 50,'X': 10,'V': 5,'I': 1}
+        ans = b = 0
+        l1 = list(s)
+        for i in range(len(s)):
+            a = roman[l1.pop()]
+            if a < b:
+                ans -= a
+            else:
+                ans += a
+            b = a
+        return ans
+
+########################################################################################
+'''
+Roman numerals are represented by seven different symbols: I, V, X, L, C, D and M.
+
+For example, two is written as II in Roman numeral, just two one's added together. Twelve is written as, XII, which is simply X + II. The number twenty seven is written as XXVII, which is XX + V + II.
+
+Roman numerals are usually written largest to smallest from left to right. However, the numeral for four is not IIII. Instead, the number four is written as IV. Because the one is before the five we subtract it making four. The same principle applies to the number nine, which is written as IX. There are six instances where subtraction is used:
+
+I can be placed before V (5) and X (10) to make 4 and 9. 
+X can be placed before L (50) and C (100) to make 40 and 90. 
+C can be placed before D (500) and M (1000) to make 400 and 900.
+Given an integer, convert it to a roman numeral. Input is guaranteed to be within the range from 1 to 3999.
+
+Example 1:
+
+Input: 3
+Output: "III"
+Example 2:
+
+Input: 4
+Output: "IV"
+'''
+class Solution:
+    def intToRoman(self, num: int) -> str:
+        m = ['', 'M', 'MM', 'MMM']
+        c = ['', 'C', 'CC', 'CCC', 'CD', 'D', 'DC', 'DCC', 'DCCC', 'CM']
+        x = ['', 'X', 'XX', 'XXX', 'XL', 'L', 'LX', 'LXX', 'LXXX', 'XC']
+        i = ['', 'I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX']
+        return m[num//1000] + c[(num%1000)//100] + x[(num%100)//10] + i[num%10]
