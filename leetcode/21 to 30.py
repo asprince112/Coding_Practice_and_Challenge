@@ -315,3 +315,28 @@ class Solution:
         
         return res
 ##############################################################################################
+'''
+Given an integer, write a function to determine if it is a power of three.
+'''
+class Solution:
+    def isPowerOfThree(self, n: int) -> bool:
+        if n == 0:
+            return n==1
+        while n % 3 == 0:
+            n /= 3         
+        return n == 1
+###############################################################################################
+'''
+Given an array containing n distinct numbers taken from 0, 1, 2, ..., n, find the one that is missing from the array.
+
+Example 1:
+Input: [3,0,1]
+Output: 2
+
+Example 2:
+Input: [9,6,4,2,3,5,7,0,1]
+Output: 8
+'''
+class Solution:
+    def missingNumber(self, nums: List[int]) -> int:
+        return sum(range(len(nums)+1)) - sum(nums)
